@@ -1,0 +1,24 @@
+{
+  "name": "acollector",
+  "version": "1.0.0",
+  "description": "//by arron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qianzhuoyao/ACollector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qianzhuoyao/ACollector/issues"
+  },
+  "homepage": "https://github.com/qianzhuoyao/ACollector#readme",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
