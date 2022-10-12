@@ -1,9 +1,9 @@
 type funcType = (preValue: any) => any
 
 /**
- * new ACollector().do((prevalue)=>{console.log(prevalue);return 0})    //多次执行始终执行一边
- * new ACollector().do((prevalue)=>{console.log(prevalue);return 1})
- * new ACollector().do((prevalue)=>{console.log(prevalue);return 2})
+ * new ACollector().do((prevalue)=>{console.log(prevalue);return new Promise(r=>r(0)})    //多次执行始终执行一边
+ * new ACollector().do((prevalue)=>{console.log(prevalue);return new Promise(r=>r(1)})
+ * new ACollector().do((prevalue)=>{console.log(prevalue);return new Promise(r=>r(2)})
  *
  * 最终会统一执行一次 一秒后
  * 1
