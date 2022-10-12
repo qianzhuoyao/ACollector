@@ -5,7 +5,7 @@ type funcType = (preValue: any) => any
  * new ACollector().do((prevalue)=>{console.log(prevalue);return 1})
  * new ACollector().do((prevalue)=>{console.log(prevalue);return 2})
  *
- * 最终会统一执行一次
+ * 最终会统一执行一次 一秒后
  * 1
  * 2
  * 3
@@ -19,12 +19,12 @@ export class ACollector {
     private static instance: ACollector;
 
     constructor(time: number) {
-        this.forInstance(time)
+        ACollector.instance.time = time
+        this.forInstance()
     }
 
-    private forInstance(time: number) {
+    private forInstance() {
         if (!ACollector.instance) {
-            this.time = time
             ACollector.instance = this;
         }
         return ACollector.instance
