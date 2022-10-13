@@ -16,7 +16,7 @@ new ACollector().do<string>((preValue): Promise<string> => {
 })
 
 new ACollector().do<boolean>((preValue): Promise<boolean> => {
-    console.log(preValue)    //1
+    console.log(preValue)    //one
     return new Promise(r => {
         r(true)
     })
