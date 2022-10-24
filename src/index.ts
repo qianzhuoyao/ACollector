@@ -1,6 +1,6 @@
 // type funcType = <T>(preValue: any) => Promise<T>
 interface funcType<T> {
-    (preValue: T | undefined): Promise<T>
+    (preValue: T | undefined,): Promise<T>
 }
 
 /**
@@ -19,6 +19,7 @@ export class ACollector {
     private time: number = 1000;
     private tasks: (funcType<any> | null)[] = []
     private preValue: any = undefined
+    private pending: boolean = false
     private static instance: ACollector;
 
     constructor(time: number = 1000) {
@@ -26,6 +27,10 @@ export class ACollector {
         ACollector.instance.time = time
     }
 
+    /**
+     * 单例
+     * @private
+     */
     private forInstance() {
         if (!ACollector.instance) {
             this.preValue = undefined
@@ -34,11 +39,19 @@ export class ACollector {
         return ACollector.instance
     }
 
-
+    /**
+     * 收集待执行的任务
+     * @param task
+     * @private
+     */
     private collector<T>(task: funcType<T>) {
         ACollector.instance.tasks.push(task)
     }
 
+    /**
+     * 任务执行倒计时
+     * @private
+     */
     private countDown() {
         ACollector.instance.timer = setTimeout(() => {
             if (!ACollector.instance.over) {
@@ -51,28 +64,71 @@ export class ACollector {
                 })
             }
             ACollector.instance.over = true
+            ACollector.instance.pending = false
         }, ACollector.instance.time)
     }
 
+    /**
+     * 重置自动执行倒计时
+     * @param time
+     */
     public setTimeCount(time: number) {
+        if (ACollector.instance.isPending()) {
+            throw new Error('dont change TimeOut in pending status')
+        }
         ACollector.instance.time = time
+
     }
 
+    /**
+     * 当前任务是否执行完毕
+     */
+    public isOver(): boolean {
+        return this.over
+    }
+
+    /**
+     * 任务是否已经开始
+     */
+    public isPending(): boolean {
+        return this.pending
+    }
+
+    /**
+     * 开始注册任务
+     * @param task
+     */
     public do<T>(task: funcType<T>) {
+        ACollector.instance.pending = true
         ACollector.instance.collector<T>(task)
         clearTimeout(ACollector.instance.timer)
         ACollector.instance.countDown()
     }
 
+    /**
+     * 重置结束状态
+     */
     public reset() {
         ACollector.instance.over = false
     }
 
+    /**
+     * 任务队列转化为任务栈
+     */
     public reverse() {
+        if (ACollector.instance.isPending()) {
+            throw new Error('dont change TimeOut in pending status')
+        }
         ACollector.instance.tasks = ACollector.instance.tasks.reverse()
     }
 
+    /**
+     * 清除任务
+     */
     public removeTasks() {
+        if (ACollector.instance.isPending()) {
+            throw new Error('dont change TimeOut in pending status')
+        }
         ACollector.instance.tasks = []
     }
 }
