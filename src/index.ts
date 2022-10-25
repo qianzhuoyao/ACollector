@@ -72,12 +72,12 @@ export class ACollector {
      * 重置自动执行倒计时
      * @param time
      */
-    public setTimeCount(time: number) {
+    public setTimeCount(time: number): ACollector {
         if (ACollector.instance.isPending()) {
             throw new Error('dont change TimeOut in pending status')
         }
         ACollector.instance.time = time
-
+        return ACollector.instance
     }
 
     /**
@@ -98,38 +98,42 @@ export class ACollector {
      * 开始注册任务
      * @param task
      */
-    public do<T>(task: funcType<T>) {
+    public do<T>(task: funcType<T>): ACollector {
         ACollector.instance.pending = true
         ACollector.instance.collector<T>(task)
         clearTimeout(ACollector.instance.timer)
         ACollector.instance.countDown()
+        return ACollector.instance
     }
 
     /**
      * 重置结束状态
      */
-    public reset() {
+    public reset(): ACollector {
         ACollector.instance.over = false
+        return ACollector.instance
     }
 
     /**
      * 任务队列转化为任务栈
      */
-    public reverse() {
+    public reverse(): ACollector {
         if (ACollector.instance.isPending()) {
             throw new Error('dont change TimeOut in pending status')
         }
         ACollector.instance.tasks = ACollector.instance.tasks.reverse()
+        return ACollector.instance
     }
 
     /**
      * 清除任务
      */
-    public removeTasks() {
+    public removeTasks(): ACollector {
         if (ACollector.instance.isPending()) {
             throw new Error('dont change TimeOut in pending status')
         }
         ACollector.instance.tasks = []
+        return ACollector.instance
     }
 }
 
