@@ -1,6 +1,6 @@
 // type funcType = <T>(preValue: any) => Promise<T>
 interface funcType<T> {
-    (preValue: T | undefined,): Promise<T>
+    (preValue: any,): Promise<T>
 }
 
 /**
